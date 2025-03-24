@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class APIResto{
   Future<List<Resto>> getRestos() async{
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     final dataString = await _loadAsset('data/restos.json');
 
     final Map<String, dynamic> json = jsonDecode(dataString);

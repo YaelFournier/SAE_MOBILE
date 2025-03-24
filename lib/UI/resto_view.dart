@@ -6,6 +6,7 @@ class RestoView extends StatelessWidget{
   RestoView({super.key});
 
   final Future<List<Resto>> _resto = APIResto().getRestos();
+  String tel = 'No data';
 
   Widget _resto2widget(Resto resto, context){
     return Card(
@@ -13,7 +14,7 @@ class RestoView extends StatelessWidget{
       color: Colors.orange,
       child: ListTile(
         title: Text(resto.name),
-        subtitle: Text('Horaires : ${resto.openingHours} - Tel : ${resto.phone}'),
+        subtitle: Text('${resto.type} - Tel : ${resto.phone ?? tel}'),
         trailing: Text("Ville : ${resto.commune}"),
       ),
     );

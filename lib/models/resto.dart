@@ -1,8 +1,8 @@
 class Resto {
-  double lon;
-  double lat;
-  String osmId;
-  String type;
+  double? lon;
+  double? lat;
+  String? osmId;
+  String? type;
   String name;
   String? operator;
   String? brand;
@@ -13,26 +13,25 @@ class Resto {
   String? vegan;
   String? delivery;
   String? takeaway;
-  String? internetAccess;
   String? stars;
   String? capacity;
   String? driveThrough;
   String? wikidata;
   String? brandWikidata;
-  String siret;
+  String? siret;
   String? phone;
   String? website;
   String? facebook;
   String? smoking;
-  String comInsee;
-  String comNom;
-  String region;
-  String codeRegion;
-  String departement;
-  String codeDepartement;
-  String commune;
-  String codeCommune;
-  String osmEdit;
+  String? comInsee;
+  String? comNom;
+  String? region;
+  String? codeRegion;
+  String? departement;
+  String? codeDepartement;
+  String? commune;
+  String? codeCommune;
+  String? osmEdit;
 
   Resto({
     required this.lon,
@@ -49,7 +48,6 @@ class Resto {
     this.vegan,
     this.delivery,
     this.takeaway,
-    this.internetAccess,
     this.stars,
     this.capacity,
     this.driveThrough,
@@ -72,6 +70,13 @@ class Resto {
   });
 
   factory Resto.fromJson(Map<String, dynamic> json) {
+    final cuisine = <String>[];
+    if(json['cuisine']!=null){
+      json['cuisine'].forEach((element){
+        cuisine.add(element);
+      });
+    }
+
     return Resto(
       lon: json['geo_point_2d']['lon'],
       lat: json['geo_point_2d']['lat'],
@@ -82,12 +87,11 @@ class Resto {
       brand: json['brand'],
       openingHours: json['opening_hours'],
       wheelchair: json['wheelchair'],
-      cuisine: json['cuisine'] != null ? List<String>.from(json['cuisine']) : null,
+      cuisine: cuisine,
       vegetarian: json['vegetarian'],
       vegan: json['vegan'],
       delivery: json['delivery'],
       takeaway: json['takeaway'],
-      internetAccess: json['internet_access'],
       stars: json['stars'],
       capacity: json['capacity'],
       driveThrough: json['drive_through'],
