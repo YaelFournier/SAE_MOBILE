@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/models/api_resto.dart';
 import 'package:sae_mobile/models/resto.dart';
+import 'package:sae_mobile/UI/detail_screen_resto.dart';
+import 'package:sae_mobile/config/utils.dart';
 
 class RestoView extends StatelessWidget{
   RestoView({super.key});
@@ -11,8 +13,16 @@ class RestoView extends StatelessWidget{
   Widget _resto2widget(Resto resto, context){
     return Card(
       elevation: 6,
-      color: Colors.orange,
+      color: type2color(resto.type),
       child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailScreenResto(resto: resto),
+            ),
+          );
+        },
         title: Text(resto.name),
         subtitle: Text('${resto.type} - Tel : ${resto.phone ?? tel}'),
         trailing: Text("Ville : ${resto.commune}"),
