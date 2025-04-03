@@ -22,10 +22,7 @@ class DetailScreenResto extends StatelessWidget {
             _buildRestaurantInfoSection(),
             const SizedBox(height: 24),
 
-            //PhotoPicker(),
-            const SizedBox(height: 24),
-
-            _buildRatingSection(),
+            PhotoPicker(resto: resto),
             const SizedBox(height: 24),
 
             _buildReviewsSection(),
@@ -82,42 +79,6 @@ class DetailScreenResto extends StatelessWidget {
     );
   }
 
-  Widget _buildRatingSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Notez ce restaurant',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Center(
-          child: RatingBar.builder(
-            initialRating: 3,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            onRatingUpdate: (rating) {
-              // Sauvegarder la note
-            },
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextButton(
-          onPressed: () {
-            // Soumettre la note
-          },
-          child: const Text('Soumettre ma note'),
-        ),
-      ],
-    );
-  }
 
   Widget _buildReviewsSection() {
     return Column(
@@ -157,7 +118,7 @@ class DetailScreenResto extends StatelessWidget {
                 RatingBar.builder(
                   initialRating: rating.toDouble(),
                   direction: Axis.horizontal,
-                  allowHalfRating: true,
+                  allowHalfRating: false,
                   itemCount: 5,
                   itemSize: 20,
                   ignoreGestures: true,
@@ -193,7 +154,7 @@ class DetailScreenResto extends StatelessWidget {
                 initialRating: 0,
                 minRating: 1,
                 direction: Axis.horizontal,
-                allowHalfRating: true,
+                allowHalfRating: false,
                 itemCount: 5,
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => const Icon(

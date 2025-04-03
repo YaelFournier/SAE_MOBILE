@@ -1,82 +1,123 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:sae_mobile/models/resto.dart';
 
 class PhotoPicker extends StatefulWidget {
+  final Resto resto;
+
+  PhotoPicker({required this.resto});
+
   @override
   _PhotoPickerState createState() => _PhotoPickerState();
 }
 
 class _PhotoPickerState extends State<PhotoPicker> {
-  final List<File> _photos = [];
+  List<dynamic> _imageFiles = []; // Supports File (mobile) and Uint8List (web)
 
-  final ImagePicker _picker = ImagePicker();
+  void _pickImages() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: true,
+      withData: kIsWeb, // Needed for web
+    );
 
-  Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
+    if (result != null) {
       setState(() {
-        _photos.add(File(pickedFile.path));
+        if (kIsWeb) {
+          _imageFiles.addAll(result.files.map((file) => file.bytes));
+        } else {
+          _imageFiles.addAll(result.paths.whereType<String>().map((path) => File(path)));
+        }
       });
     }
   }
 
+  void _openGalleryView() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GalleryView(images: _imageFiles, resto: widget.resto)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ajouter des photos')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Images pour ${widget.resto.name}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Row(
           children: [
-            const Text(
-              'Photos',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 150,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ..._photos.map((photo) => _buildPhotoItem(photo)).toList(),
-                  _buildAddPhotoButton(),
-                ],
-              ),
+            ...List.generate(3, (index) {
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    height: 150, // Increased height
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(8),
+                      image: _imageFiles.length > index
+                          ? DecorationImage(
+                        image: kIsWeb
+                            ? MemoryImage(_imageFiles[index]) as ImageProvider
+                            : FileImage(_imageFiles[index]),
+                        fit: BoxFit.cover,
+                      )
+                          : null,
+                    ),
+                    child: _imageFiles.length > index
+                        ? null
+                        : const Icon(Icons.add_a_photo, color: Colors.grey, size: 50),
+                  ),
+                ),
+              );
+            }),
+            IconButton(
+              icon: const Icon(Icons.add, size: 30),
+              onPressed: _openGalleryView,
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: _pickImages,
+          child: const Text('Ajouter des images depuis les fichiers'),
+        ),
+      ],
     );
   }
+}
 
-  Widget _buildPhotoItem(File photo) {
-    return Container(
-      width: 150,
-      margin: const EdgeInsets.only(right: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
-          image: FileImage(photo),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
+class GalleryView extends StatelessWidget {
+  final List<dynamic> images; // Supports both File and Uint8List
+  final Resto resto;
 
-  Widget _buildAddPhotoButton() {
-    return GestureDetector(
-      onTap: _pickImage,
-      child: Container(
-        width: 150,
-        margin: const EdgeInsets.only(right: 8),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(8),
+  GalleryView({required this.images, required this.resto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(resto.name)),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(8),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
         ),
-        child: const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+        itemCount: images.length,
+        itemBuilder: (context, index) {
+          return Image(
+            image: kIsWeb
+                ? MemoryImage(images[index]) as ImageProvider
+                : FileImage(images[index]),
+            fit: BoxFit.cover,
+          );
+        },
       ),
     );
   }
