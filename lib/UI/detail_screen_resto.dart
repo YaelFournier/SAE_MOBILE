@@ -50,18 +50,12 @@ class DetailScreenResto extends StatelessWidget {
 
         _buildInfoRow(Icons.phone, resto.phone ?? 'Non renseigné'),
         _buildInfoRow(Icons.public, resto.website ?? 'Non renseigné'),
-        _buildInfoRow(Icons.access_time, resto.openingHours ?? 'Horaires non renseignés'),
+        //_buildInfoRow(Icons.access_time, resto.openingHours ?? 'Horaires non renseignés'),
         _buildInfoRow(Icons.accessible, resto.wheelchair ?? 'Accessibilité non renseignée'),
 
         const SizedBox(height: 12),
 
-        if (resto.cuisine != null && resto.cuisine!.isNotEmpty) Wrap(
-          spacing: 8,
-          children: resto.cuisine!.map((cuisine) => Chip(
-            label: Text(cuisine),
-            backgroundColor: Colors.orange[100],
-          )).toList(),
-        ),
+        //if (resto.cuisine != null && resto.cuisine!.isNotEmpty) Wrap(spacing: 8, children: resto.cuisine!.map((cuisine) => Chip(label: Text(cuisine),backgroundColor: Colors.orange[100],)).toList(),),
       ],
     );
   }

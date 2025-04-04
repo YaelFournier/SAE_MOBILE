@@ -9,11 +9,11 @@ Future<void> main() async{
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbmFrcWdjcW56amJyZWtmcmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczODUxMDgsImV4cCI6MjA1Mjk2MTEwOH0.MYRbjw8A1O-Y3rttQLHNVBobEKQZPRXBy0QTyYVO98Q',
   );
 
-  runApp( Rest_O());
+  runApp( RestO());
 }
 
-class Rest_O extends StatelessWidget {
-  Rest_O({super.key});
+class RestO extends StatelessWidget {
+  RestO({super.key});
 
   @override
   Widget build(BuildContext context) {
