@@ -12,7 +12,7 @@ class AccueilView extends StatelessWidget {
           children: [
             // Titre
             const Text(
-              "Galerie d'Images",
+              "Restaurants à la Une",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20), // Espacement entre le titre et les images
@@ -23,26 +23,27 @@ class AccueilView extends StatelessWidget {
               crossAxisCount: 2, // 2 colonnes
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
-              children: List.generate(4, (index) {
-                String image = "images/image${index + 1}.jpg";
-                return GestureDetector(
-                  onTap: () {
-                    // Action quand on clique sur une image
-                    print("Image ${index + 1} cliquée !");
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage(image),
-                        fit: BoxFit.cover,
+              children:
+                List.generate(4, (index) {
+                  String image = "images/image${index + 1}.jpg";
+                  return GestureDetector(
+                    onTap: () {
+                      // Action quand on clique sur une image
+                      print("Image ${index + 1} cliquée !");
+                    },
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: AssetImage(image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
             ),
           ],
         ),
