@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 class Connexion extends StatefulWidget {
   @override
@@ -10,50 +8,24 @@ class Connexion extends StatefulWidget {
 class _ConnexionState extends State<Connexion> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _mdpController = TextEditingController();
-  Database? _database;
 
-  @override
-  void initState() {
-    super.initState();
-    _initDatabase();
-  }
-
-  Future<void> _initDatabase() async {
-    _database = await openDatabase(
-      join(await getDatabasesPath(), 'users.db'),
-      version: 1,
-    );
-  }
-
-  Future<bool> _verifierConnexion(String email, String mdp) async {
-    final List<Map<String, dynamic>> users = await _database!.query(
-      'User',
-      where: 'email = ? AND mdp = ?',
-      whereArgs: [email, mdp],
-    );
-    return users.isNotEmpty;
-  }
-
-  Future<void> _connecter() async {
+  void _connecter() {
     final email = _emailController.text;
     final mdp = _mdpController.text;
 
-    if (await _verifierConnexion(email, mdp)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Connexion réussie !')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Email ou mot de passe incorrect.')),
-      );
-    }
+    print("Email: $email");
+    print("Mot de passe: $mdp");
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Connexion réussie !')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Connexion"),
+        title: const Text("Connexion"),
         backgroundColor: Colors.orange,
       ),
       body: Padding(
@@ -64,37 +36,37 @@ class _ConnexionState extends State<Connexion> {
             children: [
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _mdpController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _connecter,
-                child: Text("Se connecter"),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
-                  textStyle: TextStyle(fontSize: 18),
+                  minimumSize: const Size(double.infinity, 50),
                   backgroundColor: Colors.orange,
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: const Text("Se connecter"),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
                   // Redirection vers l'inscription
                 },
-                child: Text("Pas de compte ? S'inscrire"),
+                child: const Text("Pas de compte ? S'inscrire"),
               ),
             ],
           ),
