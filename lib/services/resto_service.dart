@@ -43,8 +43,7 @@ class RestoService {
         .eq('idR', resto.id);
   }
 
-  Future<void> deleteUser(int id) async{
-    await supabaseService.supabase.from('AIMER').delete().eq('idR', id);
+  Future<void> deleteResto(int id) async{
     await supabaseService.supabase.from('AVIS').delete().eq('idR', id);
     await supabaseService.supabase.from('HORAIRES').delete().eq('idR', id);
     await supabaseService.supabase.from('CUISINER').delete().eq('idR', id);

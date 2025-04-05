@@ -13,7 +13,7 @@ Future<void> main() async{
 }
 
 class RestO extends StatelessWidget {
-  RestO({super.key});
+  const RestO({super.key});
 
   @override
   Widget build(BuildContext context) {
