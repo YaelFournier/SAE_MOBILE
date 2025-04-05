@@ -43,8 +43,8 @@ class UserService {
         .eq('idU', user.idU);
   }
 
+
   Future<void> deleteUser(int id) async{
-    await supabaseService.supabase.from('AIMER').delete().eq('idU', id);
     await supabaseService.supabase.from('AVIS').delete().eq('idU', id);
     await supabaseService.supabase.from(_tableName).delete().eq('idU', id);
   }
