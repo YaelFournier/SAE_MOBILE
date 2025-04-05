@@ -18,3 +18,11 @@ Color type2color(String? type){
       return Colors.grey;
   }
 }
+
+TimeOfDay parseTime(String timeString) {
+  final parts = timeString.split(':');
+  return TimeOfDay(
+    hour: int.parse(parts[0]),
+    minute: int.parse(parts[1]),
+  );
+}
