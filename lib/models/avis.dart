@@ -37,26 +37,41 @@ class Avis {
     return '${dateA.day}/${dateA.month}/${dateA.year} à ${dateA.hour}h${dateA.minute.toString().padLeft(2, '0')}';
   }
 
-  // Calcul du temps écoulé (version améliorée)
-  String timeSinceCreation() {
-    final dateA = this.dateA;
-    final now = DateTime.now();
-    final difference = now.difference(dateA);
+  static String timeSinceCreation(DateTime dateA) {
+    final now = DateTime.now().toUtc(); // Utilisation du temps UTC
+    final dateAUtc = dateA.toUtc(); // Conversion de la date en UTC
+    final difference = now.difference(dateAUtc);
 
     if (difference.inDays > 365) {
       final years = (difference.inDays / 365).floor();
-      return '$years an${years > 1 ? 's' : ''}';
+      return 'Il y a $years an${years > 1 ? 's' : ''}';
     } else if (difference.inDays > 30) {
       final months = (difference.inDays / 30).floor();
-      return '$months mois';
+      return 'Il y a $months mois';
     } else if (difference.inDays > 0) {
-      return '${difference.inDays} jour${difference.inDays > 1 ? 's' : ''}';
+      return 'Il y a ${difference.inDays} jour${difference.inDays > 1 ? 's' : ''}';
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} heure${difference.inHours > 1 ? 's' : ''}';
+      return 'Il y a ${difference.inHours} heure${difference.inHours > 1 ? 's' : ''}';
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''}';
+      return 'Il y a ${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''}';
     } else {
       return 'À l\'instant';
     }
+  }
+
+  Avis copyWith({
+    int? idR,
+    String? mailU,
+    int? note,
+    String? description,
+    DateTime? dateA,
+  }) {
+    return Avis(
+      idR: idR ?? this.idR,
+      mailU: mailU ?? this.mailU,
+      note: note ?? this.note,
+      description: description ?? this.description,
+      dateA: dateA ?? this.dateA,
+    );
   }
 }

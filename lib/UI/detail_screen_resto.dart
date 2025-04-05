@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/models/resto.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:sae_mobile/models/avis.dart';
+import 'package:sae_mobile/services/avis_service.dart';
 import 'package:sae_mobile/UI/photo_picker.dart';
+import 'package:sae_mobile/UI/horaires_list.dart';
+import 'package:sae_mobile/UI/avis_list.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:sae_mobile/services/user_service.dart';
 
 class DetailScreenResto extends StatelessWidget {
   const DetailScreenResto({super.key, required this.resto});
@@ -21,11 +26,9 @@ class DetailScreenResto extends StatelessWidget {
           children: [
             _buildRestaurantInfoSection(),
             const SizedBox(height: 24),
-
             PhotoPicker(resto: resto),
             const SizedBox(height: 24),
-
-            _buildReviewsSection(),
+            AvisList(restaurantId: resto.id),
           ],
         ),
       ),
@@ -33,8 +36,8 @@ class DetailScreenResto extends StatelessWidget {
         onPressed: () {
           _showAddReviewDialog(context);
         },
-        child: const Icon(Icons.add_comment),
         tooltip: 'Ajouter un avis',
+        child: const Icon(Icons.add_comment),
       ),
     );
   }
@@ -42,20 +45,21 @@ class DetailScreenResto extends StatelessWidget {
   Widget _buildRestaurantInfoSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:[
-        if (resto.brand != null) Text('Chaîne: ${resto.brand}',
-          style: const TextStyle(fontSize: 16, color: Colors.grey),),
-
+      children: [
+        if (resto.brand != null)
+          Text(
+            'Chaîne: ${resto.brand}',
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ),
         const SizedBox(height: 12),
-
         _buildInfoRow(Icons.phone, resto.phone ?? 'Non renseigné'),
         _buildInfoRow(Icons.public, resto.website ?? 'Non renseigné'),
-        //_buildInfoRow(Icons.access_time, resto.openingHours ?? 'Horaires non renseignés'),
         _buildInfoRow(Icons.accessible, resto.wheelchair ?? 'Accessibilité non renseignée'),
 
-        const SizedBox(height: 12),
-
-        //if (resto.cuisine != null && resto.cuisine!.isNotEmpty) Wrap(spacing: 8, children: resto.cuisine!.map((cuisine) => Chip(label: Text(cuisine),backgroundColor: Colors.orange[100],)).toList(),),
+        const SizedBox(height: 16),
+        const Text('Horaires:', style: TextStyle(fontWeight: FontWeight.bold)),
+        HorairesList(restaurantId: resto.id),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -73,69 +77,19 @@ class DetailScreenResto extends StatelessWidget {
     );
   }
 
+  void _showAddReviewDialog(BuildContext context) async {
+    int note = 1;
+    final descriptionController = TextEditingController();
 
-  Widget _buildReviewsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Avis',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        _buildReviewItem('Username', 3, 'Avis'),
-        TextButton(
-          onPressed: () {
-            // Voir tous les avis
-          },
-          child: const Text('Voir tous les avis'),
-        ),
-      ],
-    );
-  }
+    // Récupérer l'utilisateur avec id 1
+    final defaultUser = await UserService().getUserById(1);
+    if (defaultUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Utilisateur par défaut introuvable')),
+      );
+      return;
+    }
 
-  Widget _buildReviewItem(String name, int rating, String comment) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                RatingBar.builder(
-                  initialRating: rating.toDouble(),
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemSize: 20,
-                  ignoreGestures: true,
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {},
-                ),
-              ],
-            ),
-            Text(comment),
-            const Text(
-              'Il y a x temps.',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showAddReviewDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -145,7 +99,7 @@ class DetailScreenResto extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               RatingBar.builder(
-                initialRating: 0,
+                initialRating: 1,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: false,
@@ -155,15 +109,18 @@ class DetailScreenResto extends StatelessWidget {
                   Icons.star,
                   color: Colors.amber,
                 ),
-                onRatingUpdate: (rating) {},
+                onRatingUpdate: (rating) {
+                  note = rating.toInt();
+                },
               ),
               const SizedBox(height: 16),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Votre avis',
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Votre avis (optionnel)',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 2,
+                maxLines: 3,
               ),
             ],
           ),
@@ -173,9 +130,22 @@ class DetailScreenResto extends StatelessWidget {
               child: const Text('Annuler'),
             ),
             TextButton(
-              onPressed: () {
-                // Sauvegarder l'avis
+              onPressed: () async {
+                final avis = Avis(
+                  idR: resto.id,
+                  mailU: defaultUser.mailU, // Utilise le mail de l'user id 1
+                  note: note,
+                  description: descriptionController.text.isNotEmpty
+                      ? descriptionController.text
+                      : null,
+                  dateA: DateTime.now(),
+                );
+
+                await AvisService().addAvis(avis);
                 Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Avis ajouté avec succès')),
+                );
               },
               child: const Text('Publier'),
             ),

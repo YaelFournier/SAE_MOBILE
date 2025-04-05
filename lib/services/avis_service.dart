@@ -41,6 +41,20 @@ class AvisService {
     return total / response.length;
   }
 
+  Future<void> updateAvis(Avis avis) async {
+    await supabaseService.supabase
+        .from(_tableName)
+        .update({
+      'note': avis.note,
+      'description': avis.description,
+    })
+        .match({
+      'idR': avis.idR,
+      'mailU': avis.mailU,
+      'dateA': avis.dateA.toIso8601String(),
+    });
+  }
+
   Future<void> deleteAvis(int idR, String mailU, DateTime dateA) async {
     await supabaseService.supabase
         .from(_tableName)

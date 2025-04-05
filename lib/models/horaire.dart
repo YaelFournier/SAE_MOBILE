@@ -23,12 +23,12 @@ class Horaire {
     };
   }
 
-  static Horaire fromJson(Map<String, dynamic> json) {
+  factory Horaire.fromJson(Map<String, dynamic> json) {
     return Horaire(
-      idR: json['idR'],
-      jour: json['jour'],
-      heureOuverture: parseTime(json['heure_ouverture']),
-      heureFermeture: parseTime(json['heure_fermeture']),
+      idR: json['idR'] as int? ?? 0, // Fallback si null
+      jour: json['jour'] as String? ?? 'Inconnu', // Fallback si null
+      heureOuverture: parseTime(json['heure_ouverture']?.toString() ?? '00:00'), // Fallback
+      heureFermeture: parseTime(json['heure_fermeture']?.toString() ?? '00:00'), // Fallback
     );
   }
 }
