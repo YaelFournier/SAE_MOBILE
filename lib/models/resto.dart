@@ -57,7 +57,7 @@ class Resto {
       region: json['region'],
       departement: json['departement'],
       commune: json['commune'],
-      codeCommune: json['code_commune'],
+      codeCommune: json['codeCommune'],
     );
   }
 }
