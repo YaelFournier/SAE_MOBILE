@@ -20,16 +20,6 @@ class HoraireService {
           .eq('idR', idR)
           .order('jour');
 
-      // Debug des données brutes
-      debugPrint('Données horaires brutes:');
-      for (final item in response) {
-        debugPrint('''
-        Jour: ${item['jour']} 
-        Ouverture: ${item['heureOuverture']} (${item['heureOuverture'].runtimeType})
-        Fermeture: ${item['heureFermeture']} (${item['heureFermeture'].runtimeType})
-      ''');
-      }
-
       return response.map(Horaire.fromJson).toList();
     } catch (e) {
       debugPrint('Erreur lors de la récupération des horaires: $e');

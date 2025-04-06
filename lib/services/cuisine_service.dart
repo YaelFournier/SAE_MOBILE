@@ -5,22 +5,13 @@ class CuisineService {
   final supabaseService = SupabaseServices();
   final String _tableName = 'CUISINE';
 
-  Future<int?> addCuisine(Cuisine cuisine) async{
-    final response = await supabaseService.supabase
-        .from(_tableName)
-        .insert(cuisine.toJson())
-        .select('idC')
-        .single();
-
-    return response['idC'];
-  }
-
   Future<List<Cuisine>> getCuisines() async{
     final response = await supabaseService.supabase
         .from(_tableName)
-        .select();
+        .select('idC, nameC')
+        .order('nameC');
 
-    return response.map((data) => Cuisine.fromJson(data)).toList();
+    return response.map((c) => Cuisine.fromJson(c)).toList();
   }
 
   Future<Cuisine?> getCuisineById(int id) async{
@@ -34,6 +25,17 @@ class CuisineService {
       return Cuisine.fromJson(response);
     }
     return null;
+  }
+
+  Future<List<Cuisine>> getCuisinesForRestaurant(int idR) async {
+    final response = await supabaseService.supabase
+        .from('CUISINER')
+        .select('''
+          CUISINE (idC, nameC)
+        ''')
+        .eq('idR', idR);
+
+    return response.map((c) => Cuisine.fromJson(c['CUISINE'])).toList();
   }
 
   Future<void> updateCuisine(Cuisine cuisine) async {

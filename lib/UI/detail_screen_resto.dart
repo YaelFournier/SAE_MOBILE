@@ -7,6 +7,8 @@ import 'package:sae_mobile/UI/horaires_list.dart';
 import 'package:sae_mobile/UI/avis_list.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sae_mobile/services/user_service.dart';
+import 'package:sae_mobile/models/cuisine.dart';
+import 'package:sae_mobile/services/cuisine_service.dart';
 
 class DetailScreenResto extends StatelessWidget {
   const DetailScreenResto({super.key, required this.resto});
@@ -24,6 +26,7 @@ class DetailScreenResto extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildCuisineSection(),
             _buildRestaurantInfoSection(),
             const SizedBox(height: 24),
             PhotoPicker(resto: resto),
@@ -38,6 +41,34 @@ class DetailScreenResto extends StatelessWidget {
         },
         tooltip: 'Ajouter un avis',
         child: const Icon(Icons.add_comment),
+      ),
+    );
+  }
+
+  Widget _buildCuisineSection() {
+    if (resto.cuisines == null || resto.cuisines!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Types de cuisine:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: resto.cuisines!.map((cuisine) => Chip(
+              label: Text(cuisine.nameC),
+              backgroundColor: Colors.orange[100],
+            )).toList(),
+          ),
+        ],
       ),
     );
   }

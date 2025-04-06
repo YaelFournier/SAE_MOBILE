@@ -1,3 +1,3 @@
 # sae_mobile
 
-flutter pub add : file_picker, flutter_rating_bar, supabase_flutter
+flutter pub add : flutter_rating_bar, supabase_flutter, pull_to_refresh

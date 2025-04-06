@@ -9,7 +9,7 @@ Future<void> main() async{
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwbmFrcWdjcW56amJyZWtmcmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzczODUxMDgsImV4cCI6MjA1Mjk2MTEwOH0.MYRbjw8A1O-Y3rttQLHNVBobEKQZPRXBy0QTyYVO98Q',
   );
 
-  runApp( RestO());
+  runApp(const RestO());
 }
 
 class RestO extends StatelessWidget {
@@ -18,6 +18,7 @@ class RestO extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Rest'O",
         home: Home()
     );
