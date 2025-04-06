@@ -27,6 +27,7 @@ class CuisineService {
     return null;
   }
 
+
   Future<List<Cuisine>> getCuisinesForRestaurant(int idR) async {
     final response = await supabaseService.supabase
         .from('CUISINER')

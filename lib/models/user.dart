@@ -19,6 +19,7 @@ class UserSupa {
       'nomU': nomU,
       'prenomU': prenomU,
       'mailU': mailU,
+
       'mdp': mdp,
     };
   }

@@ -32,6 +32,7 @@ class DetailScreenResto extends StatelessWidget {
             PhotoPicker(resto: resto),
             const SizedBox(height: 24),
             AvisList(restaurantId: resto.id),
+
           ],
         ),
       ),
@@ -120,7 +121,6 @@ class DetailScreenResto extends StatelessWidget {
       );
       return;
     }
-
     showDialog(
       context: context,
       builder: (context) {
@@ -161,6 +161,7 @@ class DetailScreenResto extends StatelessWidget {
               child: const Text('Annuler'),
             ),
             TextButton(
+
               onPressed: () async {
                 final avis = Avis(
                   idR: resto.id,
