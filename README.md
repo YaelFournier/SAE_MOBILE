@@ -34,5 +34,5 @@ Cette application mobile a pour objectif de fournir une interface intuitive pour
 
 - **Yael Fournier**
 - **Jules Gruson-Delannoy**
--**Marin Chesneau**
--**Noa Foneteny**
+- **Marin Chesneau**
+- **Noa Foneteny**
