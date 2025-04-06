@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color type2color(String? type){
+Color type2color(String? type) {
   switch (type) {
     case "restaurant":
       return Colors.orange;
@@ -17,3 +17,4 @@ Color type2color(String? type){
     default:
       return Colors.grey;
   }
+}
