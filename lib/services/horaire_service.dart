@@ -13,12 +13,28 @@ class HoraireService {
   }
 
   Future<List<Horaire>> getHorairesByRestaurant(int idR) async {
-    final response = await supabaseService.supabase
-        .from(_tableName)
-        .select()
-        .eq('idR', idR);
+    try {
+      final response = await supabaseService.supabase
+          .from(_tableName)
+          .select('idR, jour, heureOuverture, heureFermeture')
+          .eq('idR', idR)
+          .order('jour');
 
-    return response.map((data) => Horaire.fromJson(data)).toList();
+      // Debug des données brutes
+      debugPrint('Données horaires brutes:');
+      for (final item in response) {
+        debugPrint('''
+        Jour: ${item['jour']} 
+        Ouverture: ${item['heureOuverture']} (${item['heureOuverture'].runtimeType})
+        Fermeture: ${item['heureFermeture']} (${item['heureFermeture'].runtimeType})
+      ''');
+      }
+
+      return response.map(Horaire.fromJson).toList();
+    } catch (e) {
+      debugPrint('Erreur lors de la récupération des horaires: $e');
+      return [];
+    }
   }
 
   Future<void> updateHoraire(Horaire horaire) async {
@@ -28,7 +44,7 @@ class HoraireService {
         .match({
       'idR': horaire.idR,
       'jour': horaire.jour,
-      'heure_ouverture': '${horaire.heureOuverture.hour}:${horaire.heureOuverture.minute}'
+      'heureOuverture': '${horaire.heureOuverture.hour}:${horaire.heureOuverture.minute}'
     });
   }
 
@@ -39,7 +55,7 @@ class HoraireService {
         .match({
       'idR': idR,
       'jour': jour,
-      'heure_ouverture': '${heureOuverture.hour}:${heureOuverture.minute}'
+      'heureOuverture': '${heureOuverture.hour}:${heureOuverture.minute}'
     });
   }
 }
