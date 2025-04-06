@@ -3,6 +3,8 @@ import 'package:sae_mobile/UI/connexion.dart';
 import 'package:sae_mobile/UI/home.dart';
 import 'package:sae_mobile/models/user.dart';
 import 'package:sae_mobile/services/user_service.dart';
+import 'package:sae_mobile/viewmodels/connexion_view_model.dart';
+import 'package:provider/provider.dart';
 
 class Inscription extends StatefulWidget {
   @override
@@ -63,7 +65,10 @@ class _InscriptionState extends State<Inscription> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Connexion()),
+          MaterialPageRoute(builder: (context) => ChangeNotifierProvider(
+            create: (context) => ConnexionViewModel(),
+            child: Connexion(),
+          ))
         );
       } else {
         setState(() {

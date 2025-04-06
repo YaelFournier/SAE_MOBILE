@@ -18,7 +18,7 @@ class ConnexionViewModel extends ChangeNotifier{
 
   int get getUserId => _user_id;
 
-  void set isDark(int value){
+  void setUserId(int value){
     _user_id = value;
     _connexionRepository.saveConnexion(value);
     notifyListeners();

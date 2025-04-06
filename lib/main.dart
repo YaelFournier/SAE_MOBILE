@@ -26,6 +26,7 @@ class RestO extends StatelessWidget {
       child: Consumer<ConnexionViewModel>(
           builder: (context, connexViewModel,child) {
             return MaterialApp(
+              debugShowCheckedModeBanner: false,
               title: "Rest'O",
               home: Home(),
             );

@@ -2,6 +2,9 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/UI/inscription.dart';
 import 'package:sae_mobile/services/user_service.dart';
+import 'package:sae_mobile/viewmodels/connexion_view_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class Connexion extends StatefulWidget {
   @override
@@ -41,6 +44,8 @@ class _ConnexionState extends State<Connexion> {
           const SnackBar(content: Text('Connexion réussie !')),
         );
 
+        context.read<ConnexionViewModel>().setUserId(user.idU!);
+        context.read<ConnexionViewModel>().getUserId;
         // Reviens au Home après une connexion réussie
         Future.delayed(const Duration(milliseconds: 300), () {
           Navigator.pop(context); // Ferme la page de connexion et retourne à la page précédente

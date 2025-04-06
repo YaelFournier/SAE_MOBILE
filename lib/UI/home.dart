@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sae_mobile/UI/accueil_view.dart';
 import 'package:sae_mobile/UI/resto_view.dart';
 import 'package:sae_mobile/UI/inscription.dart';
+import 'package:sae_mobile/UI/settings.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> _listevue = <Widget>[AccueilView(), RestoView(), RestoView()];
+  final List<Widget> _listevue = <Widget>[RestoView(), RestoView() ,EcranSettings()];
   int _index = 0;
   bool _pushed = false;
 
@@ -49,12 +49,12 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Accueil",
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.fastfood),
             label: "Restos",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.thumb_up_alt_outlined),
+            label: "Favoris",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

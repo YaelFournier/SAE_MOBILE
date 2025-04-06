@@ -7,8 +7,9 @@ import 'package:sae_mobile/UI/horaires_list.dart';
 import 'package:sae_mobile/UI/avis_list.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sae_mobile/services/user_service.dart';
-import 'package:sae_mobile/models/cuisine.dart';
-import 'package:sae_mobile/services/cuisine_service.dart';
+import 'package:provider/provider.dart';
+import 'package:sae_mobile/viewmodels/connexion_view_model.dart';
+
 
 class DetailScreenResto extends StatelessWidget {
   const DetailScreenResto({super.key, required this.resto});
@@ -110,12 +111,12 @@ class DetailScreenResto extends StatelessWidget {
   }
 
   void _showAddReviewDialog(BuildContext context) async {
+    int user_id = context.read<ConnexionViewModel>().getUserId;
     int note = 1;
     final descriptionController = TextEditingController();
 
-    // Récupérer l'utilisateur avec id 1
-    final defaultUser = await UserService().getUserById(1);
-    if (defaultUser == null) {
+    final connectedUser = await UserService().getUserById(user_id);
+    if (connectedUser == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Utilisateur par défaut introuvable')),
       );
@@ -165,7 +166,7 @@ class DetailScreenResto extends StatelessWidget {
               onPressed: () async {
                 final avis = Avis(
                   idR: resto.id,
-                  mailU: defaultUser.mailU, // Utilise le mail de l'user id 1
+                  mailU: connectedUser.mailU,
                   note: note,
                   description: descriptionController.text.isNotEmpty
                       ? descriptionController.text
