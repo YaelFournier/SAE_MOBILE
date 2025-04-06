@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/UI/inscription.dart';
 import 'package:sae_mobile/services/user_service.dart';
@@ -20,7 +21,6 @@ class _ConnexionState extends State<Connexion> {
     final email = _emailController.text.trim();
     final mdp = _mdpController.text;
 
-    // Vérification que l'email et le mot de passe ne sont pas vides
     if (email.isEmpty || mdp.isEmpty) {
       setState(() {
         _errorMessage = "Email et mot de passe sont obligatoires.";
@@ -32,13 +32,12 @@ class _ConnexionState extends State<Connexion> {
       _isLoading = true;
       _errorMessage = null;
     });
-
+q
     try {
       // Cherche l'utilisateur par son email
       final user = await _userService.getUserByEmail(email);
 
-      if (user != null && user.mdp == mdp) {
-        // Si l'utilisateur existe et le mot de passe est correct
+      if (user != null && BCrypt.checkpw(mdp, user.mdp)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Connexion réussie !')),
         );

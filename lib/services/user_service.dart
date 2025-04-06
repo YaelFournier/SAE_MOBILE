@@ -1,3 +1,4 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:sae_mobile/models/user.dart';
 import 'package:sae_mobile/services/supabase_services.dart';
 
@@ -6,6 +7,7 @@ class UserService {
   final String _tableName = 'USER';
 
   Future<int?> addUser(UserSupa user) async {
+    user.mdp = BCrypt.hashpw(user.mdp, BCrypt.gensalt());
     final response = await supabaseService.supabase
         .from(_tableName)
         .insert(user.toJson())

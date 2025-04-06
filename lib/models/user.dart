@@ -3,7 +3,7 @@ class UserSupa {
   final String nomU;
   final String prenomU;
   final String mailU;
-  final String mdp;
+  String mdp;
 
   UserSupa({
     this.idU,
