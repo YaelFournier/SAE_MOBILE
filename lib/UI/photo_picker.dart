@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:sae_mobile/models/resto.dart';
 import 'package:sae_mobile/services/images_services.dart';
+
 
 class PhotoPicker extends StatefulWidget {
   final Resto resto;

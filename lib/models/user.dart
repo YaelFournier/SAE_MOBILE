@@ -3,7 +3,6 @@ class UserSupa {
   final String nomU;
   final String prenomU;
   final String mailU;
-  final String typeU;
   final String mdp;
 
   UserSupa({
@@ -11,7 +10,6 @@ class UserSupa {
     required this.nomU,
     required this.prenomU,
     required this.mailU,
-    required this.typeU,
     required this.mdp,
   });
 
@@ -21,7 +19,7 @@ class UserSupa {
       'nomU': nomU,
       'prenomU': prenomU,
       'mailU': mailU,
-      'typeU': typeU,
+
       'mdp': mdp,
     };
   }
@@ -32,7 +30,6 @@ class UserSupa {
       nomU: json['nomU'],
       prenomU: json['prenomU'],
       mailU: json['mailU'],
-      typeU: json['typeU'],
       mdp: json['mdp'],
     );
   }

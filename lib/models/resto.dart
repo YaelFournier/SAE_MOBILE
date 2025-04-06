@@ -1,3 +1,5 @@
+import 'package:sae_mobile/models/cuisine.dart';
+
 class Resto {
   final int id;
   final String? type;
@@ -11,6 +13,7 @@ class Resto {
   final String? departement;
   final String? commune;
   final String? codeCommune;
+  final List<Cuisine>? cuisines;
 
   Resto({
     required this.id,
@@ -25,9 +28,10 @@ class Resto {
     required this.departement,
     required this.commune,
     required this.codeCommune,
+    this.cuisines,
   });
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'idR': id,
       'type': type,
@@ -41,23 +45,37 @@ class Resto {
       'departement': departement,
       'commune': commune,
       'codeCommune': codeCommune,
+      'cuisines': cuisines?.map((c) => c.toJson()).toList(),
     };
   }
 
-  static Resto fromJson(Map<String, dynamic> json) {
+  factory Resto.fromJson(Map<String, dynamic> json) {
     return Resto(
-      id: json['idR'],
-      type: json['type'],
-      name: json['name'],
-      brand: json['brand'],
-      wheelchair: json['wheelchair'],
-      siret: json['siret'],
-      phone: json['phone'],
-      website: json['website'],
-      region: json['region'],
-      departement: json['departement'],
-      commune: json['commune'],
-      codeCommune: json['codeCommune'],
+      id: json['idR'] as int,
+      type: json['type'] as String?,
+      name: json['name'] as String,
+      brand: json['brand'] as String?,
+      wheelchair: json['wheelchair'] as String?,
+      siret: json['siret'] as String?,
+      phone: json['phone'] as String?,
+      website: json['website'] as String?,
+      region: json['region'] as String?,
+      departement: json['departement'] as String?,
+      commune: json['commune'] as String?,
+      codeCommune: json['codeCommune'] as String?,
+      cuisines: json['cuisines'] != null
+          ? (json['cuisines'] as List).map((c) => Cuisine.fromJson(c)).toList()
+          : null,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Resto &&
+              runtimeType == other.runtimeType &&
+              id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

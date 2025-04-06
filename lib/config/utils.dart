@@ -17,4 +17,3 @@ Color type2color(String? type){
     default:
       return Colors.grey;
   }
-}

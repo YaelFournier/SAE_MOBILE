@@ -10,7 +10,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> _listevue = <Widget>[AccueilView(),RestoView(), RestoView()];
+  final List<Widget> _listevue = <Widget>[RestoView(), RestoView()];
 
   int _index = 0;
 
@@ -33,10 +33,7 @@ class _HomeState extends State<Home> {
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
           items:  <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Accueuil",
-            ),
+            //BottomNavigationBarItem(icon: Icon(Icons.home), label: "Accueuil",),
             BottomNavigationBarItem(
               icon: Icon(Icons.fastfood),
               label: "Restos",
