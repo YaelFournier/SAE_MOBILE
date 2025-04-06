@@ -16,9 +16,7 @@ Cette application mobile a pour objectif de fournir une interface intuitive pour
 - Consultation des restaurants
 - Recherche des restaurants par noms
 - Connection/inscription
-- Ajouter des restaurants aux favoris
 - Faire une recherche par type de cuisne
-- Modifier le thème de l'application
 - Notation des restaurants
 - Gestion des notation des restaurants
 
