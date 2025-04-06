@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/UI/home.dart';
-import 'package:sae_mobile/UI/inscription.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sae_mobile/viewmodels/connexion_view_model.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,18 @@ class RestO extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: "Rest'O",
-        home: Home()
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ConnexionViewModel()),
+      ],
+      child: Consumer<ConnexionViewModel>(
+          builder: (context, connexViewModel,child) {
+            return MaterialApp(
+              title: "Rest'O",
+              home: Home(),
+            );
+          }
+      ),
     );
   }
 }

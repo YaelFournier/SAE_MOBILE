@@ -2,7 +2,6 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:flutter/material.dart';
 import 'package:sae_mobile/UI/inscription.dart';
 import 'package:sae_mobile/services/user_service.dart';
-import 'package:sae_mobile/models/user.dart';
 
 class Connexion extends StatefulWidget {
   @override
@@ -32,7 +31,7 @@ class _ConnexionState extends State<Connexion> {
       _isLoading = true;
       _errorMessage = null;
     });
-q
+
     try {
       // Cherche l'utilisateur par son email
       final user = await _userService.getUserByEmail(email);
