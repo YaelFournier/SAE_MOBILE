@@ -1,12 +1,12 @@
 class UserSupa {
-  final int idU;
+  final int? idU;
   final String nomU;
   final String prenomU;
   final String mailU;
-  final String mdp;
+  String mdp;
 
   UserSupa({
-    required this.idU,
+    this.idU,
     required this.nomU,
     required this.prenomU,
     required this.mailU,
@@ -19,7 +19,6 @@ class UserSupa {
       'nomU': nomU,
       'prenomU': prenomU,
       'mailU': mailU,
-
       'mdp': mdp,
     };
   }
